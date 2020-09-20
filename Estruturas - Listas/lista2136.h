@@ -4,10 +4,9 @@
 #include <string.h>
 #define MAX 30
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 typedef struct{
 
-char nome[MAX];
+char nome[30];
 char resposta[5];
 
 } AMIGO;
@@ -40,6 +39,12 @@ return l;
 
 }
 
+void destruirLista(LISTA* l){
+
+free(l);
+
+}
+
 int listaVazia(LISTA* l){
 
 if(l == 0) return -1;
@@ -51,6 +56,47 @@ int listaCheia(LISTA* l){
 
 if(l == 0) return -1;
 else return l->cont == MAX;
+
+}
+
+int inserirNoFinal(LISTA* l, AMIGO a){
+
+if(l==0) return 0;
+if(listaCheia(l)) return 0;
+l->dados[l->cont] = a;
+l->cont++;
+return 1;
+
+}
+
+int inserirNoInicio(LISTA* l, AMIGO a){
+
+int i;
+if(l==0) return 0;
+if(listaCheia(l)) return 0;
+for(i=l->cont-1; i>=0; i--){
+
+l->dados[i+1] = l->dados[i];
+
+}
+l->dados[0] = a;
+l->cont++;
+return 1;
+
+}
+
+int inserirNoMeio(LISTA* l, AMIGO a, int
+posicao){
+int i;
+if(l==0) return 0;
+if(listaCheia(l)) return 0;
+for(i=l->cont-1; i>=posicao; i--){
+l->dados[i+1] = l->dados[i];
+
+}
+l->dados[posicao] = a;
+l->cont++;
+return 1;
 
 }
 
@@ -96,9 +142,9 @@ int remover(LISTA *l, char* nome){
 	
 	posRem = buscaSequencial(l, nome);
 	
-	// Se encontrou o nome para remover
+	// Se encontrou a placa para remover
 	if(posRem >= 0){
-		// Desloca os AMIGOS que estiverem à direita da posicao encontrada, 1 casa para esquerda
+		// Desloca os veivulos que estiverem à direita da posicao encontrada, 1 casa para esquerda
 		for(i=posRem; i<l->cont; i++){
 			l->dados[i] = l->dados[i+1];
 		}
@@ -106,28 +152,40 @@ int remover(LISTA *l, char* nome){
 	}	
 }
 
-void ordenaStrings(AMIGO a[MAX]) { //// Booble sort
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-AMIGO aux;
+void amigoHabay(AMIGO a[MAX]) {
+	
+	printf("\n");
+	for (int i=0; i<MAX; i++){
+		if (strcmp(a[i].resposta, "YES") == 0) {
+			printf("\nAmigo do Habay:\n%s", a[i].nome);
+			break; /// vai interromper o LOOP assim que encontrar o primeiro "YES"
+		}
+	}
+	
+}
+
+LISTA ordemAlfabetica(LISTA *l, AMIGO a[MAX]) {
+
+char aux[50];
 int r;
 
-for (int i=MAX; i>=0; i--){
-	for (int j=1; j<=i; j++){
-		r = strcmp(a[j-1].nome, a[j].nome);
-		if (r == 1){
-			aux = a[j-1];
-			a[j-1] = a[j];
-			a[j] = aux;
+	for (int i=0; i<MAX; i++) {
+		for (int j=i+1; j<MAX; j++) {
+			r = strcmp(a[i].nome, a[j].nome);
+			if (r > 0) {
+				strcpy(aux, a[i].nome);
+				strcpy(a[i].nome, a[j].nome);
+				strcpy(a[j].nome, aux);
+			}
 		}
 	}
 }
-}
 
 void imprimirAmigo(LISTA *l, AMIGO a[MAX]){ 
-
 	// YES
-	printf("\n");
-	ordenaStrings(a);
+	
 	for (int i=0; i<MAX; i++) {
 		if (strcmp(a[i].resposta, "YES") == 0) {
 			printf("%s\n", a[i].nome);
@@ -135,13 +193,11 @@ void imprimirAmigo(LISTA *l, AMIGO a[MAX]){
 }
 
 	// NO
-	ordenaStrings(a);
 	for (int i=0; i<MAX; i++) {
 		if (strcmp(a[i].resposta, "NO") == 0) {
 			printf("%s\n", a[i].nome);
 	}
 }
-
 }
 
 void imprimirDadosLista(LISTA* l, AMIGO a[MAX]){
@@ -151,47 +207,4 @@ void imprimirDadosLista(LISTA* l, AMIGO a[MAX]){
 			imprimirAmigo(l, a);
 		}
 }
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-LISTA* l;
-AMIGO a[MAX];
-
-int main() {
-
-setlocale(LC_ALL, "portuguese");
-
-char fim[5] = "FIM";
-char guarda[MAX];
-
-l = criarLista();
-
-for (int i = 0; i<= MAX; i++){
-	scanf("%s %s", a[i].nome, a[i].resposta);
-	
-	if (strcmp(a[i].nome, "FIM") == 0) {
-		remover(l, a[i].nome);
-		//strcpy(a[i].nome, "");
-		break;
-		/*
-		A função strcmp(..., ...) serve para comparar duas strings por meio de um resultado binário.
-		Documentação: (http://www.cplusplus.com/reference/cstring/strcmp/)
-		*/
-	} else {
-		a[i] = criarAmigo(a[i].nome, a[i].resposta);
-		inserirOrdenado(l, a[i]);
-		
-		for (int i=0; i<MAX; i++) {
-			if (strcmp(a[i].resposta, "YES") == 0){
-				strcpy(guarda, a[i].nome);
-				break;
-		}
-		}
-	}
-}
-
-imprimirDadosLista(l, a);
-printf("\nAmigo do Habay:\n%s", guarda);
-return 0;
 }
