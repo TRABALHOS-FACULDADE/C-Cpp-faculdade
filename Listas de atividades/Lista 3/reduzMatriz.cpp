@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <locale.h>
+#include <string.h>
 #define max 10
 
 void carregaMatriz(int mat[max][max], int linhas, int colunas){
