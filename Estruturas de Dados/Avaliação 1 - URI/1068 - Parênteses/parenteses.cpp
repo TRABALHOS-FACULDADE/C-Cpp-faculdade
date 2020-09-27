@@ -66,9 +66,20 @@ void checaTopoPilhas(PILHA* p1, PILHA* p2, char* equacao) {
     int tam = strlen(equacao);
         for (int i=0; i<tam; i++) {
 
-            if (p->topo == 0 && equacao[i] == ')' && equacao[i] == '(') {
+            /*
+            if (p->topo == 0 && p2->topo == 0 && (equacao[0] == ')')) {
+                empilhar(p2, '\0');
+            } */
+
+            if (p->topo == 0 && p2->topo == 0 && equacao[i] == ')' && equacao[i] == '(') {
                 empilhar(p, equacao[i]);
             }
+
+            /*
+            if (p->topo == p2->topo && equacao[i] == ')') {
+                empilhar(p, '1');
+            }
+            */
 
             if (equacao[i] == '(') {
                 empilhar(p, equacao[i]);
@@ -76,6 +87,9 @@ void checaTopoPilhas(PILHA* p1, PILHA* p2, char* equacao) {
                 empilhar(p2, equacao[i]);
             } else if (equacao[i] == ')' && (p->topo == p2->topo) && p2->topo != 0) {
                 empilhar(p2, equacao[i]);
+            } else if (p->topo == p2->topo && equacao[i] == ')') {
+                empilhar(p2, '\0');
+                empilhar(p, '\0');
             }
         }
 }
@@ -83,14 +97,17 @@ void checaTopoPilhas(PILHA* p1, PILHA* p2, char* equacao) {
 void possibilidade(PILHA* p1, PILHA* p2) {
 
     if (p->topo == 0 && p2->topo == 0) {
+        //printf("\n%d\n%d\n", p->topo, p2->topo);
         printf("incorrect\n");
         destruirPilhas(p, p2);
     }
 
     else if (p->topo == p2->topo) {
+        //printf("\n%d\n%d\n", p->topo, p2->topo);
         printf("correct\n");
         destruirPilhas(p, p2);
     } else if (p->topo != p2->topo) {
+        //printf("\n%d\n%d\n", p->topo, p2->topo);
         printf("incorrect\n");
         destruirPilhas(p, p2);
     }
@@ -114,7 +131,6 @@ int main () {
 
         checaTopoPilhas(p, p2, equacao);
         possibilidade(p, p2);
-        
     }
 
     return 0;

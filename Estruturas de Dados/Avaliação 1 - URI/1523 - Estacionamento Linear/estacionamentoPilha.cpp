@@ -69,18 +69,24 @@ void checaPossibilidade(int cont, int vagas);
 static int horario = 13;
 
 void fluxoEstacionamento(CARRO c, PILHA* p, int carros, int cont,  int vagas) {
-	for (int i=0; i<carros; i++) {
+
+/* Essa função vai percorrer uma variável i de 1 até o horário final da saída do último carro.
+Enquanto percorrer essa variável, será feita a comparação com os dados de entrada e saída dos carros
+na pilha. Quando i se igualar a esses horários, serão feitas as ações de empilhar e empilhar. */
+
+	for (int i=0; i<carros; i++) { /// loop para cadastrar os horários de chegada e saída dos carros 
 		scanf("%d %d", &c.chegada, &c.saida);
 		c = criarCarro(c.chegada, c.saida);
 	}
 	
-	for (int i=1; i<horario; i++) {
+	for (int i=1; i<horario; i++) { /// loop para percorrer as horas e controlar o fluxo na garagem
 		if (i == c.chegada) {
 			empilhar(p, c, vagas);
 			cont++;
-		} else if (i == c.saida){
-			if (p->dados[p->topo].saida != p->dados[i-1].saida) {
+		} else if (i == p->dados[p->topo].saida){
+			if (p->dados[p->topo].saida > p->dados[p->topo].chegada) {
 				cont += 5;
+				break;
 			}
 			desempilhar(p);
 			cont--;
@@ -92,11 +98,14 @@ void fluxoEstacionamento(CARRO c, PILHA* p, int carros, int cont,  int vagas) {
 
 void checaPossibilidade(int cont, int vagas) {
 	
+/* Essa função vai receber o contador (cont) e o número de vagas da garagem. Caso o valor do cont seja
+menor ou igual ao número de vagas, será possível. Caso seja maior, será impossível. */
+
 	//printf("\n%d\n", cont);
 	
 	if (cont <= vagas) {
 		printf("Sim\n");
-	} else if (cont > vagas || pilhaCheia(p, vagas)){
+	} else if (cont > vagas){
 		printf("Nao\n");
 	}
 }
