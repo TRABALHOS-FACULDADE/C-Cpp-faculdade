@@ -52,11 +52,11 @@ int empilhar(PILHA* p, CARRO c, int vagas){
 
 CARRO desempilhar(PILHA *p) { 
 	CARRO temp;
-	if(p != NULL || !pilhaVazia(p)){	
+	if(p != NULL || !pilhaVazia(p)) {	
 		p->topo--;  // Reduz o topo para retirar
 		temp = p->dados[p->topo];
 		return temp;
-	}else{
+	} else {
 		return temp;
 	}
 }
@@ -65,9 +65,7 @@ CARRO desempilhar(PILHA *p) {
 PILHA* p;
 CARRO c;
 /////////////////////////////////////////////////////////////////////////////////////////////////
-void fluxoEstacionamento(CARRO c, PILHA* p, int carros, int cont,  int vagas);
 void checaPossibilidade(int cont, int vagas);
-
 static int horario = 13;
 
 void fluxoEstacionamento(CARRO c, PILHA* p, int carros, int cont,  int vagas) {
@@ -77,25 +75,28 @@ void fluxoEstacionamento(CARRO c, PILHA* p, int carros, int cont,  int vagas) {
 	}
 	
 	for (int i=1; i<horario; i++) {
-		if (i == c.chegada && !pilhaCheia(p, vagas)) {
+		if (i == c.chegada) {
 			empilhar(p, c, vagas);
 			cont++;
-		}
-		else if (i == c.saida && !pilhaVazia(p)) {
-			break;
+		} else if (i == c.saida){
+			if (p->dados[p->topo].saida != p->dados[i-1].saida) {
+				cont += 5;
+			}
+			desempilhar(p);
+			cont--;
 		}
 	}
-	//printf("\nCont: %d\n", cont);
+
+	checaPossibilidade(cont, vagas);
 }
 
 void checaPossibilidade(int cont, int vagas) {
 	
-	printf("\n%d\n", cont);
-	printf("\n%d vagas\n", vagas);
+	//printf("\n%d\n", cont);
 	
 	if (cont <= vagas) {
 		printf("Sim\n");
-	} else if (cont > vagas){
+	} else if (cont > vagas || pilhaCheia(p, vagas)){
 		printf("Nao\n");
 	}
 }
@@ -111,7 +112,6 @@ int cont = 0;
 	scanf("%d %d", &carros, &vagas);
 	if (carros == 0 && vagas == 0) break;
 	fluxoEstacionamento(c, p, carros, cont, vagas);
-	checaPossibilidade(cont, vagas);
 	
 	destruirPilha(p);
 }
