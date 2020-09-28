@@ -1,4 +1,4 @@
-# Atividades da Faculdade
+# Atividades da Faculdade (C e C++)
 Esse repositório contém códigos feitos para resolução de exercícios passados pela faculdade. Nenhum conteúdo aqui presente é profissional.
 
 <p align="center">
