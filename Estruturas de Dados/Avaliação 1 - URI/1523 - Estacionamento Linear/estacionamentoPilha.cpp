@@ -106,7 +106,7 @@ menor ou igual ao número de vagas, será possível. Caso seja maior, será impo
 	if (cont <= vagas) {
 		printf("Sim\n");
 	} else if (cont > vagas){
-		printf("Nao\n");
+		printf("aNo\n");
 	}
 }
 

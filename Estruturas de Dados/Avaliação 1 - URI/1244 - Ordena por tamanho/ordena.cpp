@@ -54,19 +54,36 @@ int empilhar(PILHA* p, char s){
 PILHA* p;
 SEQUENCIA s;
 /////////////////////////////////////////////////////////////////////////////////////////
+
+void ordenaStrings(char* nome[MAX]) { //// Booble sort
+
+char* aux[MAX];
+int r;
+
+for (int i=MAX; i>=0; i--){
+	for (int j=1; j<=i; j++){
+		r = strcmp(nome[j-1], nome[j]);
+		if (r == 1){
+			aux[MAX] = nome[j-1];
+			nome[j-1] = nome[j];
+			nome[j] = aux[MAX];
+		}
+	}
+}
+}
+
 int main() {
 
 int casos;
 char frase[MAX];
 
-	int eof = 0;
+	scanf("%d", &casos);
 
-	while (1) {
-		if(scanf("%d", &eof) == EOF) break;
+	for (int i=1; i<casos+2; i++) {
 
 		p = criarPilha();
 		fgets(frase, MAX, stdin);
-		//empilhar(p, frase[MAX]);
+
 	}
 	
 return 0;

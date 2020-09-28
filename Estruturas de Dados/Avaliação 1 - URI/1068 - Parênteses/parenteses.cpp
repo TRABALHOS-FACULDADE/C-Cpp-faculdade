@@ -1,3 +1,15 @@
+/*
+Wrong Answer 5%, porém funcionando para os casos de teste do URI:
+
+a+(b*c)-2-a                   correct
+(a+b*(2-c)-2+a)*2             correct
+(a*b-(2+c)                    incorrect
+2*(3-a))                      incorrect
+)3+b*(2-c)(                   incorrect
+
+*/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -66,13 +78,11 @@ void checaTopoPilhas(PILHA* p1, PILHA* p2, char* equacao) {
     int tam = strlen(equacao);
         for (int i=0; i<tam; i++) {
 
-            /*
-            if (p->topo == 0 && p2->topo == 0 && (equacao[0] == ')')) {
-                empilhar(p2, '\0');
-            } */
-
-            if (p->topo == 0 && p2->topo == 0 && equacao[i] == ')' && equacao[i] == '(') {
+            if (p->topo == 0 && p2->topo != 0 && equacao[0] == ')' && equacao[i] == '(') {
                 empilhar(p, equacao[i]);
+            }
+            if (equacao[0] == '(' && equacao[tam+1] == '(') {
+                empilhar(p, equacao[0]);
             }
 
             /*
