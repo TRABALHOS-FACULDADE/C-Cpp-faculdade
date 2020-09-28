@@ -9,7 +9,6 @@ a+(b*c)-2-a                   correct
 
 */
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

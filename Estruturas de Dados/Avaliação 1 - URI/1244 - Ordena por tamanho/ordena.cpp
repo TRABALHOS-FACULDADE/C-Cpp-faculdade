@@ -1,90 +1,133 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <locale.h>
 #include <string.h>
-
-#define MAX 100
+#define MAX 30
 
 typedef struct{
-	char* simbolos;
+
+char simbolos[30];
+
 } SEQUENCIA;
 
 SEQUENCIA criarSequencia(char* simbolos){
-	SEQUENCIA s;
-	strcpy(s.simbolos, simbolos);
-	return s;
+
+SEQUENCIA s;
+strcpy(s.simbolos, simbolos);
+return s;
+
 }
 
-typedef struct{
-	int topo;
-	char dados[MAX];
-} PILHA;
+typedef struct lista{
+int cont;
+SEQUENCIA dados[MAX];
+struct lista *prox;
 
-PILHA* criarPilha(){
-	PILHA *p;
-	p = (PILHA*)malloc(sizeof(PILHA));
-	if(p != NULL){
-		p->topo = 0;
+} LISTA;
+
+LISTA* criarLista(){
+
+	LISTA *l;
+	l = (LISTA*)malloc(sizeof(LISTA));
+	if(l != 0) {
+	l->cont = 0;
+
 	}
-	return p;
+return l;
+
 }
 
-void destruirPilha(PILHA* p){
-	free(p);
+void destruirLista(LISTA* l){
+
+free(l);
+
 }
 
-int pilhaVazia(PILHA* p){
-	if(p == NULL) return -1;
-	else return p->topo == 0;
+int listaVazia(LISTA* l){
+
+if(l == 0) return -1;
+else return l->cont == 0;
+
 }
 
-int pilhaCheia(PILHA* p){
-	if(p == NULL) return -1;
-	else return p->topo == MAX;
+int listaCheia(LISTA* l){
+
+if(l == 0) return -1;
+else return l->cont == MAX;
+
 }
 
-int empilhar(PILHA* p, char s){
-	if(p==NULL) return 0;
-	if(pilhaCheia(p)) return 0;
-	p->dados[p->topo] = s;
-	p->topo++;
+SEQUENCIA s[MAX];
+
+int inserirOrdenado(LISTA* l, SEQUENCIA s[MAX]){
+	int i, posicao;
+	if(l==NULL) return 0;
+	if(listaCheia(l)) return 0;
+	if(listaVazia(l)) 
+		posicao = 0;
+	else{ // Acha a posicao para inserir
+		for(i=l->cont-1; i>=0 && (strcmp(s[i].simbolos, s[i+1].simbolos) > 0); i--){
+			l->dados[i+1] = l->dados[i];
+		}
+		posicao = i+1;
+	}
+	l->dados[posicao] = s[MAX];
+	l->cont++;
 	return 1;
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////
-PILHA* p;
-SEQUENCIA s;
-/////////////////////////////////////////////////////////////////////////////////////////
-
-void ordenaStrings(char* nome[MAX]) { //// Booble sort
-
-char* aux[MAX];
-int r;
-
-for (int i=MAX; i>=0; i--){
-	for (int j=1; j<=i; j++){
-		r = strcmp(nome[j-1], nome[j]);
-		if (r == 1){
-			aux[MAX] = nome[j-1];
-			nome[j-1] = nome[j];
-			nome[j] = aux[MAX];
-		}
+void imprimirSequencia(LISTA *l, SEQUENCIA s[MAX]){ 
+	
+	for (int i=0; i<MAX; i++) {
+		printf("%s", s[i].simbolos);
 	}
+
+}
+
+void imprimirDadosLista(LISTA* l, SEQUENCIA s[MAX]){
+	if(l != NULL){
+		if(!listaVazia(l)){
+			imprimirSequencia(l, s);
+		}
 }
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////
+LISTA* l;
+/////////////////////////////////////////////////////////////////////////////////////////
 
 int main() {
 
 int casos;
-char frase[MAX];
+char *sub;
+char str[MAX];
+char aux[MAX];
 
 	scanf("%d", &casos);
 
-	for (int i=1; i<casos+2; i++) {
+	for (int k=0; k<casos+2; k++) {
+	
+		fgets(str, MAX, stdin);
+		sub = strtok (str, " ");
+	
+		while (sub != NULL) {
+		
+		for (int i=MAX; i>=0; i--) {
+			for (int j=1; j<i; j++) {
+				if (strcmp(&sub[j-1], &sub[j]) == 1) {
+					strcpy(aux, &sub[j-1]);
+					strcpy(&sub[j], &sub[j-1]);
+					strcpy(&sub[j], aux);
+				}
+			}
+		}
 
-		p = criarPilha();
-		fgets(frase, MAX, stdin);
+		printf("%s ", sub);
 
+		sub = strtok (NULL, " ");
+	
 	}
+  }
 	
 return 0;
 }
