@@ -14,8 +14,14 @@ int main(){
 	insereNaLista(l, 290);
 	insereNaLista(l, 3);
 	insereNaLista(l, 2);
+    inserirNoInicio(l, 99);
+    inserirNoInicio(l, 77);
+	removeElementoTopo(l);
 
 	imprimeLista(l);
+    printf("\nTamanho da lista: %d", tamanhoLista(l));
+
+	destroiLista(l);
 	
 	return 0;
 }

@@ -41,6 +41,22 @@ int insereNaLista(LISTA* l, int c) {
     return 1;
 }
 
+void inserirNoInicio(LISTA* l, int c) { /* Está inserindo na segunda posição ;-; */
+    NO* novo_no = (NO*)malloc(sizeof(NO));
+    NO* aux = *l;
+    novo_no->dados = c;
+    novo_no->prox = aux->prox;
+    aux->prox = novo_no;
+}
+
+void removeElementoTopo(LISTA* l) { /* Está removendo o elemento da segunda posição ;-; */
+    NO* trash;
+    NO* aux = *l;
+    trash = aux->prox;
+    aux->prox = trash->prox;
+    free(trash);
+}
+
 int imprimeLista(LISTA *l) {
     NO *aux = *l;
     while (aux != NULL) {
