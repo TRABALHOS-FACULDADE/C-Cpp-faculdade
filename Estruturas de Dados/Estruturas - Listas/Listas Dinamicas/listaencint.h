@@ -22,6 +22,12 @@ int listaVazia(LISTA* l) {
     return 0;
 }
 
+int tamanhoLista(LISTA *l);
+int listaCheia(LISTA* l) { /* Função raramente utilizada */
+    if (tamanhoLista(l) == MAX) return 1;
+    else return 0;
+}
+
 int insereNaLista(LISTA* l, int c) {
     if (l==NULL) return 0;
     NO *novo_no = (NO*)malloc(sizeof(NO));
@@ -53,8 +59,40 @@ void removeElementoTopo(LISTA* l) { /* Está removendo o elemento da segunda pos
     NO* trash;
     NO* aux = *l;
     trash = aux->prox;
-    aux->prox = trash->prox;
+    if (trash->prox == NULL) aux->prox = NULL;
+    else aux->prox = trash->prox;
     free(trash);
+}
+
+void removeElementoEspecifico(LISTA* l, int c) { /* Funcionou! ^-^ */
+    NO *p, *q;
+    NO* aux = *l;
+    p = aux;
+    q = aux->prox;
+    while (q != NULL && q->dados != c) {
+        p = q;
+        q = q->prox;
+    }
+    if (q != NULL) {
+        p->prox = q->prox;
+        free(q);
+    }
+}
+
+void insereAcima(LISTA *l, int x, int y) {
+    /* Insere o elemento x acima do elemento y */
+    NO *p, *q, *novo;
+    NO* aux = *l;
+    NO* novo_no = (NO*)malloc(sizeof(NO));
+    novo_no->dados = x;
+    p = aux;
+    q = aux->prox;
+    while (q != NULL && q->dados != y) {
+        p = q;
+        q = q->prox;
+    }
+    novo_no->prox = q;
+    p->prox = novo_no;
 }
 
 int imprimeLista(LISTA *l) {
@@ -66,7 +104,7 @@ int imprimeLista(LISTA *l) {
     printf("\n");   
 }
 
-int tamanhoLista(LISTA *l) {
+int tamanhoLista(LISTA *l) { /* Devolve o tamanho da lista */
     int cont=0;
     NO *atual = *l;
     while (atual != NULL) {
