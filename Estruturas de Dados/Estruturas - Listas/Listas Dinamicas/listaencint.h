@@ -59,6 +59,34 @@ int insereNaLista(LISTA* l, int c) {
     return 1;
 }
 
+int insereOrdenado(LISTA* l, int c) {
+    if (l == NULL) return 0;
+    NO *novo_no = (NO*)malloc(sizeof(NO));
+    if (novo_no == NULL) return 0;
+
+    novo_no->dados = c;
+    novo_no->prox = NULL;
+
+    if ((*l) == NULL) {
+        *l = novo_no;
+    } else {
+        NO *aux = *l;
+        NO *ant = NULL;
+
+        while (aux != NULL && aux->dados < novo_no->dados) {
+            ant = aux;
+            aux = aux->prox;
+        }
+        if (ant == NULL) {
+            *l = novo_no;
+        } else {
+            ant->prox = novo_no;
+        }
+        novo_no->prox = aux;
+    }
+    return 1;
+}
+
 void inserirNoInicio(LISTA* l, int c) { /* Está inserindo na segunda posição ;-; */
     NO* novo_no = (NO*)malloc(sizeof(NO));
     NO* aux = *l;
