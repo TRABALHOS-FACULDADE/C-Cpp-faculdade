@@ -9,7 +9,10 @@ using namespace std;
 
 int passwordValidation(char senha[MAX]) {
     bool flagUpper = false, flagLower = false, flagNumber = false;
-    if (strlen(senha) < MIN || strlen(senha) > MAX) {
+
+    int len = strlen(senha);
+
+    if (len < MIN || len > MAX) {
         cout << "Senha invalida." << endl;
     } else {
         for (int i=0; i<=MAX; i++) {
