@@ -27,29 +27,29 @@ CARNE criar_carne(char *nome_carne, int data_validade) {
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 // Imprime o vetor
-void printVet(vector<CARNE> *v, int n){
+void printVet(vector<CARNE> &v, int n){
 	int i;
 	for(i = 0; i<n-1; i++) {
-		printf("%s ", v->at(i).nome_carne);		
+		printf("%s ", v.at(i).nome_carne);		
 	}
 	for(i = n-1; i<n; i++) {
-		printf("%s", v->at(i).nome_carne);		
+		printf("%s", v.at(i).nome_carne);		
 	}
 	printf("\n");
 }
 
 // Organiza os elementos baseando-se na data de validade
-void bubblesort2(vector<CARNE> *v, int n) {
+void bubblesort2(vector<CARNE> &v, int n) {
 	int i, j, trocou=1;
     CARNE aux;
 	for (i=0; i<n-1 && trocou; i++) {
 		trocou=0; /* inicialmente nenhuma troca foi feita */
 		for (j=0; j<n-1-i; j++){
-		   if (v->at(j).data_validade > v->at(j+1).data_validade) {
+		   if (v.at(j).data_validade > v.at(j+1).data_validade) {
 			trocou=1; /* houve troca */
-			aux = v->at(j);
-			v->at(j) = v->at(j+1);
-			v->at(j+1) = aux;
+			aux = v.at(j);
+			v.at(j) = v.at(j+1);
+			v.at(j+1) = aux;
 		   }
 		}
 	}
@@ -60,9 +60,8 @@ void bubblesort2(vector<CARNE> *v, int n) {
 
 // Gera a ordem das carnes depois de serem organizadas
 int ordem_carnes(int casos) {
-    vector<CARNE> vetor, *ptr_vet;
+    vector<CARNE> vetor;
     CARNE c;
-    ptr_vet = &vetor;
     for (int i=0; i<casos; i++) {
         scanf("%s %d", c.nome_carne, &c.data_validade);
         if (c.data_validade >= 0 && c.data_validade <= 50) {
@@ -70,7 +69,7 @@ int ordem_carnes(int casos) {
             vetor.push_back(c);
         } else return 0;
     }
-    bubblesort2(ptr_vet, casos);
+    bubblesort2(vetor, casos);
     vetor.clear();
 }
 

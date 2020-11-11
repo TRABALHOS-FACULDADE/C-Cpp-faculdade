@@ -1,5 +1,5 @@
 /*
-Dicentes: Amanda Rigaud, Antônio César, Felipe Ribeiro
+Discentes: Amanda Rigaud, Antônio César, Felipe Ribeiro
 Docente: Marcos Lapa
 Disciplina: Algorítimos e Estruturas de Dados I
 
