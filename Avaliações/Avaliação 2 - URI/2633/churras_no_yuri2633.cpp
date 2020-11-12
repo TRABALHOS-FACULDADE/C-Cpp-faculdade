@@ -14,7 +14,7 @@ Código URI: 2633
 using namespace std;
 
 typedef struct {
-    char nome_carne[17];
+    char nome_carne[20];
     int data_validade;
 } CARNE;
 
@@ -81,11 +81,11 @@ int main() {
     while(true) {
         while (EOF) {
             cin >> casos;
-            cin.ignore();
             if (casos >= 0 && casos <= 10) {
                 ordem_carnes(casos);
             } else break;
         }
+        break;
     }
     return 0;
 }

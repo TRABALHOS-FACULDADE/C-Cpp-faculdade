@@ -35,15 +35,14 @@ void printVet(vector<SEQUENCIA> &v){
 }
 
 void bubblesort2(vector<SEQUENCIA> &v);
-// verifica se os vetores são reversos
 bool isReverse(vector<SEQUENCIA> &v, vector<SEQUENCIA> &v_inv, SEQUENCIA n_seq) {
     bubblesort2(v);
     int n;
     
     int len = v.size();
-    v_inv.at(1).value = n_seq.value;
+    v_inv.at(0).value = n_seq.value;
     for (int i=0; i<len; i++) {
-        if (v.at(i).value == v_inv.at(1).value) {
+        if (v.at(i).value == v_inv.at(0).value) {
             return true;
         } else return false;
     }
@@ -57,7 +56,7 @@ void bubblesort2(vector<SEQUENCIA> &v) {
 	for (i=0; i<len-1 && trocou; i++) {
 		trocou=0; /* inicialmente nenhuma troca foi feita */
 		for (j=0; j<len-1-i; j++){
-		   if (v.at(j).value > v.at(j+1).value) {
+		   if (v.at(j).value < v.at(j+1).value) {
                 trocou=1; /* houve troca */
                 aux = v.at(j);
                 v.at(j) = v.at(j+1);
@@ -85,20 +84,18 @@ int main() {
                 s_inv = criar_sequencia(s.value);
 
                 vet.push_back(s);
-                vet_inv.push_back(s);
             }
-            SEQUENCIA n_seq;
             while (true) {
                 for (int k=0; k<vagoes; k++) {
-                    cin >> n_seq.value;
-                    s_inv = criar_sequencia(n_seq.value);
+                    cin >> s_inv.value;
+                    s_inv = criar_sequencia(s_inv.value);
                     vet_inv.push_back(s_inv);
-                    if (n_seq.value == 0) {
+                    if (s_inv.value == 0) {
                         cout << endl;
                         break;
                     }
-                } if (n_seq.value == 0) break;
-                if (isReverse(vet, vet_inv, n_seq) == true) {
+                } if (s_inv.value == 0) break;
+                if (isReverse(vet, vet_inv, s_inv) == true) {
                     cout << "Yes\n";
                 } else cout << "No\n";
             }
@@ -106,8 +103,5 @@ int main() {
         vet.clear();
         vet_inv.clear();
     }
-    vet.clear();
-    vet_inv.clear();
-
     return 0;
 }
