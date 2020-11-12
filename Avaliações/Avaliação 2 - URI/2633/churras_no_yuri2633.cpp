@@ -8,6 +8,7 @@ Código URI: 2633
 */
 #include <stdio.h>
 #include <string.h>
+#include <iostream>
 #include <vector>
 
 using namespace std;
@@ -55,7 +56,6 @@ void bubblesort2(vector<CARNE> &v) {
 		   }
 		}
 	}
-    printVet(v);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -65,24 +65,27 @@ int ordem_carnes(int casos) {
     vector<CARNE> vetor;
     CARNE c;
     for (int i=0; i<casos; i++) {
-        scanf("%s %d", c.nome_carne, &c.data_validade);
+        cin >> c.nome_carne >> c.data_validade;
         if (c.data_validade >= 0 && c.data_validade <= 50) {
             c = criar_carne(c.nome_carne, c.data_validade);
             vetor.push_back(c);
         } else return 0;
     }
     bubblesort2(vetor);
+    printVet(vetor);
     vetor.clear();
 }
 
 int main() {
     int casos;
-    while(1) {
+    while(true) {
         while (EOF) {
-            scanf("%d", &casos);
+            cin >> casos;
+            cin.ignore();
             if (casos >= 0 && casos <= 10) {
                 ordem_carnes(casos);
-            } else return 0;
+            } else break;
         }
     }
+    return 0;
 }

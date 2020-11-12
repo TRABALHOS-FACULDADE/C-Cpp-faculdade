@@ -7,11 +7,10 @@ Código URI: 2654
 */
 
 #include <string.h>
-#include <stdlib.h>
 #include <iostream>
 #include <vector>
 #include <ctype.h>
-#define MAX 100
+#define MAX 20
 
 using namespace std;
 
@@ -31,23 +30,17 @@ DEUSES criar_deus(char *nome, int poder, int matou, int morreu) {
     return d;
 }
 
+bool comparaOrdemCaracter(char nome_ant[MAX], char nome_pos[MAX]) {
+    char alfa[26] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
+    'O', 'P','Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 
-void ordemAlfabetica(vector<DEUSES> &d) {
-
-    char aux[50];
-    int r;
-    int len_d = d.size();
-
-	for (int i=0; i<len_d; i++) {
-		for (int j=i+1; j<len_d; j++) {
-			r = strcmp(d.at(i).nome, d.at(j).nome);
-			if (r > 0) {
-				strcpy(aux, d.at(i).nome);
-				strcpy(d.at(i).nome, d.at(j).nome);
-				strcpy(d.at(j).nome, aux);
-			}
-		}
-	}
+    for (int i=0; i<sizeof(alfa); i++) {
+        for (int j=0; j<sizeof(alfa); j++) {
+            if (nome_ant[0] == alfa[i] && nome_pos[0] == alfa[i+j+1]) {
+                return true;
+            } else return false;
+        }
+    }
 }
 
 void printVet(vector<DEUSES> &v){
@@ -78,7 +71,7 @@ void bubbleSort(vector<DEUSES> &deuses) {
                 aux = deuses.at(j);
                 deuses.at(j) = deuses.at(j+1);
                 deuses.at(j+1) = aux;
-            } else if (strcmp(deuses.at(j).nome, deuses.at(j+1).nome) < 0 && (isupper(deuses.at(j).nome[0]) && isupper(deuses.at(j+1).nome[0]))) {
+            } else if ((comparaOrdemCaracter(deuses.at(j).nome, deuses.at(j+1).nome)) && (isupper(deuses.at(j).nome[0]) && isupper(deuses.at(j+1).nome[0]))) {
                 trocou = 1;
                 aux = deuses.at(j);
                 deuses.at(j) = deuses.at(j+1);
@@ -116,22 +109,3 @@ int main() {
 
     return 0;
 }
-
-/*
-5
-Kratos 70 12 2
-Goku 80 0 3
-Kuririn 15 0 4
-Saitama 100 0 0
-Hulk 90 0 0
-*/
-
-/*
-6
-Kratos 70 12 2
-Goku 80 0 3
-Kuririn 15 0 4
-Saitama 100 0 0
-Hulk 90 0 0
-Yamcha 10 0 0
-*/
