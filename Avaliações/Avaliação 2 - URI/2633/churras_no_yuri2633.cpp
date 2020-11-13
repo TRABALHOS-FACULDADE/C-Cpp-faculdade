@@ -7,20 +7,20 @@ Turma: Engenharia de Computação
 Código URI: 2633
 */
 #include <stdio.h>
-#include <string.h>
+#include <string>
 #include <iostream>
 #include <vector>
 
 using namespace std;
 
 typedef struct {
-    char nome_carne[20];
+    string nome;
     int data_validade;
 } CARNE;
 
-CARNE criar_carne(char *nome_carne, int data_validade) {
+CARNE criar_carne(string nome, int data_validade) {
     CARNE c;
-    strcpy(c.nome_carne, nome_carne);
+    c.nome = nome;
     c.data_validade = data_validade;
     return c;
 }
@@ -28,64 +28,70 @@ CARNE criar_carne(char *nome_carne, int data_validade) {
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 // Imprime o vetor
-void printVet(vector<CARNE> &v){
-	int i;
+void printVet(vector<CARNE> &v) {
     int len = v.size();
-	for(i = 0; i<len; i++) {
+	for(int i = 0; i<len; i++) {
         if (i==len-1) {
-            printf("%s", v.at(i).nome_carne);
+            cout << v.at(i).nome;
         }
-        else printf("%s ", v.at(i).nome_carne);
+        else cout << v.at(i).nome << " ";
 	}
 	printf("\n");
 }
 
-// Organiza os elementos baseando-se na data de validade
-void bubblesort2(vector<CARNE> &v) {
-	int i, j, trocou=1;
+// Ordena baseado na data de validade
+void quickSort(vector<CARNE> &vetor, int inicio, int fim) {
+    int i, j, meio;
+    int pivo;
     CARNE aux;
-    int len = v.size();
-	for (i=0; i<len-1 && trocou; i++) {
-		trocou=0; /* inicialmente nenhuma troca foi feita */
-		for (j=0; j<len-1-i; j++){
-		   if (v.at(j).data_validade > v.at(j+1).data_validade) {
-			trocou=1; /* houve troca */
-			aux = v.at(j);
-			v.at(j) = v.at(j+1);
-			v.at(j+1) = aux;
-		   }
-		}
-	}
+    i = inicio;
+    j = fim;
+    meio = (int)((i + j) / 2);
+    pivo = vetor.at(meio).data_validade;
+
+    do {
+        while (vetor.at(i).data_validade < pivo)
+            i = i + 1;
+        while (vetor.at(j).data_validade > pivo)
+            j = j - 1;
+
+        if (i <= j) {
+            aux = vetor.at(i);
+            vetor.at(i) = vetor.at(j);
+            vetor[j] = aux;
+            i = i + 1;
+            j = j - 1;
+        }
+    } while (j > i);
+
+    if (inicio < j)
+        quickSort(vetor, inicio, j);
+    if (i < fim)
+        quickSort(vetor, i, fim);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 // Gera a ordem das carnes depois de serem organizadas
 int ordem_carnes(int casos) {
-    vector<CARNE> vetor;
+    vector<CARNE> vetor; // LISTA de carnes
     CARNE c;
     for (int i=0; i<casos; i++) {
-        cin >> c.nome_carne >> c.data_validade;
+        cin >> c.nome >> c.data_validade;
         if (c.data_validade >= 0 && c.data_validade <= 50) {
-            c = criar_carne(c.nome_carne, c.data_validade);
+            c = criar_carne(c.nome, c.data_validade);
             vetor.push_back(c);
         } else return 0;
     }
-    bubblesort2(vetor);
+    quickSort(vetor, 0, vetor.size()-1); // organiza a lista de carnes
     printVet(vetor);
     vetor.clear();
 }
 
 int main() {
     int casos;
-    while(true) {
-        while (EOF) {
-            cin >> casos;
-            if (casos >= 0 && casos <= 10) {
-                ordem_carnes(casos);
-            } else break;
-        }
-        break;
+    while (scanf("%d", &casos) != EOF) {
+        ordem_carnes(casos);
     }
     return 0;
 }

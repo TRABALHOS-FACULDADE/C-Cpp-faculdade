@@ -8,100 +8,84 @@ Código URI: 1062
 
 #include <vector>
 #include <iostream>
-#include <stdio.h>
 
 using namespace std;
 
-typedef struct {
-    int value;
-} SEQUENCIA;
-
-SEQUENCIA criar_sequencia(int value) {
-    SEQUENCIA s;
-    s.value = value;
-    return s;
-}
-
-///////////////////////////////////////////////////////////////////////
-
-// Imprime o vetor
-void printVet(vector<SEQUENCIA> &v){
-	int i;
-    int len = v.size();
-	for(i = 0; i<len; i++) {
-        v.at(i).value;
-	}
-    cout << endl;
-}
-
-void bubblesort2(vector<SEQUENCIA> &v);
-bool isReverse(vector<SEQUENCIA> &v, vector<SEQUENCIA> &v_inv, SEQUENCIA n_seq) {
-    bubblesort2(v);
-    int n;
-    
-    int len = v.size();
-    v_inv.at(0).value = n_seq.value;
-    for (int i=0; i<len; i++) {
-        if (v.at(i).value == v_inv.at(0).value) {
-            return true;
-        } else return false;
+void printVet(vector<int> &v){
+	for (int i=v.size()-1; i>=0; i--) {
+        cout << v.at(i) << endl;
     }
 }
 
-// Organiza os elementos
-void bubblesort2(vector<SEQUENCIA> &v) {
-	int i, j, trocou=1;
-    int len = v.size();
-    SEQUENCIA aux;
-	for (i=0; i<len-1 && trocou; i++) {
-		trocou=0; /* inicialmente nenhuma troca foi feita */
-		for (j=0; j<len-1-i; j++){
-		   if (v.at(j).value < v.at(j+1).value) {
-                trocou=1; /* houve troca */
-                aux = v.at(j);
-                v.at(j) = v.at(j+1);
-                v.at(j+1) = aux;
-		   }
-		}
-	}
-    //printVet(v);
+int empilha_vagoes_b(vector<int> &trem_b, int vagoes) {
+    vector<int> aux;
+    int v;
+    for (int i=0; i<vagoes; i++) {
+        cin >> v;
+        if (v == 0) return 0;
+        aux.push_back(v);
+    }
+    for (int j=0; j<vagoes; j++) {
+        trem_b.push_back(aux.back());
+        aux.pop_back();
+    }
+    return 1;
 }
 
-///////////////////////////////////////////////////////////////////////
+void cria_trem_a(vector<int> &trem_a, int vagoes) {
+    for (int i=vagoes; i>0; i--) {
+        trem_a.push_back(i);
+    }
+}
+
+int verificador(vector<int> &trem_a, vector<int> &trem_b, vector<int> &estacao) {
+    int len = trem_a.size();
+    while (1) {
+        if (trem_b.empty()) return 1;
+        if (!trem_a.empty()) {
+            if ((trem_a.back() == trem_b.back())) {
+                trem_a.pop_back();
+                trem_b.pop_back();
+            } else {
+                if (!estacao.empty()) {
+                    if (estacao.back() != trem_b.back()) {
+                        estacao.push_back(trem_a.back());
+                        trem_a.pop_back();
+                    } else {
+                        estacao.pop_back();
+                        trem_b.pop_back();
+                    }
+                } else {
+                    estacao.push_back(trem_a.back());
+                    trem_a.pop_back();
+                }
+            }
+        } else {
+            if (estacao.back() == trem_b.back()) {
+                estacao.pop_back();
+                trem_b.pop_back();
+            } else return 0;
+        }
+    }
+}   
+    
 
 int main() {
 
-    SEQUENCIA s, s_inv;
-    vector<SEQUENCIA> vet, vet_inv;
+    vector<int> trem_a, trem_b, estacao; // PILHAS de trens
     int vagoes;
-
-    while (true) {
+    while (1) {
         cin >> vagoes;
-        if (vagoes != 0) {
-            for (int i=0; i<vagoes; i++) {
-                scanf("%i", &s.value);
-                s = criar_sequencia(s.value);
-                s_inv = criar_sequencia(s.value);
-
-                vet.push_back(s);
-            }
-            while (true) {
-                for (int k=0; k<vagoes; k++) {
-                    cin >> s_inv.value;
-                    s_inv = criar_sequencia(s_inv.value);
-                    vet_inv.push_back(s_inv);
-                    if (s_inv.value == 0) {
-                        cout << endl;
-                        break;
-                    }
-                } if (s_inv.value == 0) break;
-                if (isReverse(vet, vet_inv, s_inv) == true) {
-                    cout << "Yes\n";
-                } else cout << "No\n";
-            }
-        } else break;
-        vet.clear();
-        vet_inv.clear();
+        if (vagoes == 0) return 0;
+        while (1) {
+            if (!empilha_vagoes_b(trem_b, vagoes)) break;
+            cria_trem_a(trem_a, vagoes);
+            if (verificador(trem_a, trem_b, estacao)) {
+                cout << "Yes" << endl;
+            } else cout << "No" << endl;
+            trem_a.clear(); trem_b.clear(); estacao.clear();
+        }
+        cout << endl;
     }
     return 0;
 }

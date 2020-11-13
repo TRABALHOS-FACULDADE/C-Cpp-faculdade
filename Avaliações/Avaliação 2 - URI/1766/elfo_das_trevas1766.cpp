@@ -13,104 +13,89 @@ Código URI: 1766
 using namespace std;
 
 typedef struct rena {
-    char nome[100];
+    string nome;
     int peso;
     int idade;
     float altura;
 } RENA;
 
-RENA criar_rena(char *nome, int peso, int idade, float altura) {
-    RENA r;
-    strcpy(r.nome, nome);
-    r.peso = peso;
-    r.idade = idade;
-    r.altura = altura;
-    return r;
+int comparaChar(string a, string b) {
+    int menor;
+    a.length() < b.length() ? menor = a.length() : menor = b.length();
+    for (int k=0; k<menor; k++) {
+        if (a.at(k) > b.at(k)) {
+            return 1;
+        } else if (b.at(k) > a.at(k)) return 0;
+    }
+    return 1;
 }
 
 void bubbleSort(vector<RENA> &renas) {
     RENA aux;
-    int i, j, trocou = 1;
+
     int len = renas.size();
+
+    int i, j, trocou = 1;
     for (i = 0; i < len-1 && trocou; i++){
         trocou = 0;
         for (j = 0; j < len-1-i; j++){
             if (renas.at(j).peso > renas.at(j+1).peso) {
+                //cout << endl << renas.at(j).nome << " tem menos peso que " << renas.at(j+1).nome << endl;
                 trocou = 1;
                 aux = renas.at(j);
                 renas.at(j) = renas.at(j+1);
                 renas.at(j+1) = aux;
             } else if ((renas.at(j).idade < renas.at(j+1).idade) && (renas.at(j).peso == renas.at(j+1).peso)) {
+                //cout << endl << renas.at(j).nome << " idade menos que " << renas.at(j+1).nome << endl;
                 trocou = 1;
                 aux = renas.at(j);
                 renas.at(j) = renas.at(j+1);
                 renas.at(j+1) = aux;
-            } else if ((renas.at(j).altura < renas.at(j+1).altura) && (renas.at(j).idade == renas.at(j+1).idade)) {
+            } else if ((renas.at(j).altura < renas.at(j+1).altura) && (renas.at(j).idade == renas.at(j+1).idade) && (renas.at(j).peso == renas.at(j+1).peso)) {
+                //cout << endl << renas.at(j).nome << " altura mais que " << renas.at(j+1).nome << endl;
                 trocou = 1;
                 aux = renas.at(j);
                 renas.at(j) = renas.at(j+1);
                 renas.at(j+1) = aux;
-            } else if ((strcmp(renas.at(j).nome, renas.at(j+1).nome) < 0) && (renas.at(j).altura == renas.at(j+1).altura)) {
+            } else if (comparaChar(renas.at(j).nome, renas.at(j+1).nome) && (renas.at(j).altura == renas.at(j+1).altura) && (renas.at(j).idade == renas.at(j+1).idade) && (renas.at(j).peso == renas.at(j+1).peso)) {
+                //cout << endl << renas.at(j).nome << " e menor que " << renas.at(j+1).nome << endl;
                 trocou = 1;
                 aux = renas.at(j);
                 renas.at(j) = renas.at(j+1);
-                renas.at(j+1) = aux;
+                renas.at(j+1) = aux;      
             }
+            //printVet(renas); cout << endl;
         }
     }
 }
 
-int registra_rena(vector<RENA> &renas) {
-
-    RENA rena;
-    int tamanho, casos, i, j, total, maxTreno, cont;
-
-    for (i = 1; i <= casos; i++){
-        cin >> total >> maxTreno;
-        if ((total >= 5) && (maxTreno <= 1000)) {
-            for (j = 0; j < total; j++) {
-                cin >> rena.nome >> rena.peso >> rena.idade >> rena.altura;
-                if ((rena.peso >= 1 && rena.peso <= 300) && (rena.idade >= 1 && rena.idade <= 300) && (rena.altura >= 0.0 && rena.altura <= 3.00)) {
-                    renas.push_back(rena);
-                    tamanho = renas.size();
-                    bubbleSort(renas);
-                } else return 0;
-            }
-            cont = 1;
-            cout << "CENARIO {" << i << "}" << endl;
-            for (j = tamanho - 1; cont <= maxTreno; j--) {
-                cout << cont << " - " << renas.at(j).nome << endl;
-                cont++;
-            }
-            renas.clear();
-        } else return 0;
+int resultado(vector<RENA> &renas, int maxTreno, int i) {
+    int cont = 1;
+    int len = renas.size();
+    int j;
+    cout << "CENARIO {" << i << "}" << endl;
+    for (j = len - 1; cont <= maxTreno; j--) {
+        cout << cont << " - " << renas.at(j).nome << endl;
+        cont++;
     }
 }
 
 int main() {
  
-    vector<RENA> renas;
+    vector<RENA> renas; // LISTA de renas
     RENA rena;
-    int tamanho, casos, i, j, total, maxTreno, cont;
+    int tamanho, casos, i, j, total, maxTreno;
     
     cin >> casos;
-    cin.ignore();
-    if (casos >= 1 && casos <= 100000) {
-        registra_rena(renas);
+    for (i = 1; i <= casos; i++){
+        cin >> total >> maxTreno;
+        for (j = 0; j < total; j++) {
+            cin >> rena.nome >> rena.peso >> rena.idade >> rena.altura;
+            renas.push_back(rena);
+            bubbleSort(renas); // ordena lista de renas
+        }
+        resultado(renas, maxTreno, i);
+        renas.clear();
     }
     return 0;
 }
-
-/*
-1
-9 5
-Rudolph 50 100 1.12
-Dasher 10 121 1.98
-Dancer 10 131 1.14
-Prancer 7 142 1.36
-Vixen 50 110 1.42
-Comet 50 121 1.21
-Cupid 50 107 1.45
-Donner 30 106 1.23
-Blitzen 50 180 1.84
-*/
