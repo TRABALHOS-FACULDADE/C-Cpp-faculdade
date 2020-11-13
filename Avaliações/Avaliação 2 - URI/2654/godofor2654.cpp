@@ -9,7 +9,6 @@ Código URI: 2654
 #include <string>
 #include <iostream>
 #include <vector>
-#define MAX 100
 
 using namespace std;
 
