@@ -26,8 +26,13 @@ class Pokemon {
     }
 
     void info() {
-        std::cout << "Evolutions:" << std::endl;
-        std::cout << next_forms.front() << std::endl << next_forms.back() << std::endl;
+        std::cout << std::endl << "Evolutions:" << std::endl;
+
+        if (next_forms.front() == next_forms.back()) {
+            std::cout << next_forms.front() << std::endl;
+        } else {
+            std::cout << next_forms.front() << std::endl << next_forms.back() << std::endl;
+        }
     }
     void setNextForms(std::string name, int forms_quant) {
         for (int i=0; i<forms_quant; i++) {
@@ -43,13 +48,25 @@ class Pokemon {
     void deletePokemonBack() {
         PokemonList.pop_back();
     }
-    void evolve() {}
+    void evolve() {
+        std::string old_name;
+        old_name = name;
+        if (next_forms.empty()) {
+            std::cout << "This Pokemon is in the final form!" << std::endl;
+        } else {
+            name = next_forms.front();
+            std::cout << old_name << " get evolved into " << name << "!" << std::endl;
+            next_forms.pop_front();
+        }
+    }
 };
 
 int main() {
     Pokemon pokemon = Pokemon();
     pokemon.create("Charmander", 2);
     PokemonList.push_front(pokemon);
+    pokemon.info();
+    pokemon.evolve();
     pokemon.info();
 
     return 0;
